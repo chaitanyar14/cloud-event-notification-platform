@@ -1,0 +1,53 @@
+name: Deploy Lambda Functions
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::534545247636:role/GitHubActions-Lambda-Deploy
+          aws-region: ap-south-1
+
+      - name: Package Lambda functions
+        run: |
+          cd lambdas/authorizer
+          zip -r ../../authorizer.zip .
+          
+          cd ../event-handler
+          zip -r ../../event-handler.zip .
+          
+          cd ../notification-processor
+          zip -r ../../notification-processor.zip .
+
+      - name: Deploy authorizer
+        run: |
+          aws lambda update-function-code \
+            --function-name event-api-authorizer \
+            --zip-file fileb://authorizer.zip
+
+      - name: Deploy event handler
+        run: |
+          aws lambda update-function-code \
+            --function-name notification-event-handler \
+            --zip-file fileb://event-handler.zip
+
+      - name: Deploy notification processor
+        run: |
+          aws lambda update-function-code \
+            --function-name notification-processor \
+            --zip-file fileb://notification-processor.zip
