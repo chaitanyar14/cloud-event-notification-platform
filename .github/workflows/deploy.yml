@@ -17,26 +17,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-              - name: Check GitHub OIDC claims
-        env:
-          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
-          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
+      - name: Show GitHub repository IDs
         run: |
-          TOKEN=$(curl -sS \
-            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" \
-            | jq -r '.value')
-
-          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2 | base64 -d 2>/dev/null)
-
-          echo "$PAYLOAD" | jq '{
-            repository_id,
-            repository_owner_id,
-            repository,
-            repository_owner,
-            ref,
-            sub
-          }'
+          echo "Repository: ${{ github.repository }}"
+          echo "Repository ID: ${{ github.event.repository.id }}"
+          echo "Owner: ${{ github.repository_owner }}"
+          echo "Owner ID: ${{ github.event.repository.owner.id }}"
+          echo "Ref: ${{ github.ref }}"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
@@ -48,10 +35,10 @@ jobs:
         run: |
           cd lambdas/authorizer
           zip -r ../../authorizer.zip .
-          
+
           cd ../event-handler
           zip -r ../../event-handler.zip .
-          
+
           cd ../notification-processor
           zip -r ../../notification-processor.zip .
 
