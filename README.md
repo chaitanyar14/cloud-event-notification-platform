@@ -95,8 +95,7 @@ Applications send events to an API. The event is validated and placed into an Am
                       v
                 Lambda Deployment
 
-
-
+```
 
 
 ✨ Features
