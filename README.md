@@ -231,18 +231,21 @@ The system was tested using Postman with:
 
 ## 🛠️ AWS Services
 
-| Service | Purpose |
-|---|---|
-| API Gateway | HTTP API |
-| Lambda | Serverless processing |
-| SQS | Event queue |
-| SQS DLQ | Failed message handling |
-| SES | Email notifications |
-| DynamoDB | Notification history |
-| CloudWatch | Logs, metrics and alarms |
-| SNS | Alert notifications |
-| IAM | Access control |
-| STS / GitHub OIDC | Secure CI/CD authentication |
+| AWS Service            | Purpose                                 |
+| ---------------------- | --------------------------------------- |
+| **Amazon API Gateway** | Exposes the HTTP API                    |
+| **AWS Lambda**         | Serverless event processing             |
+| **Amazon SQS**         | Asynchronous event queue                |
+| **Amazon SQS DLQ**     | Handles repeatedly failed messages      |
+| **Amazon SES**         | Sends email notifications               |
+| **Amazon DynamoDB**    | Stores notification history             |
+| **Amazon CloudWatch**  | Logs, metrics and monitoring            |
+| **Amazon SNS**         | Sends monitoring alerts                 |
+| **AWS IAM**            | Access control and permissions          |
+| **AWS STS**            | Provides temporary credentials for OIDC |
+| **GitHub Actions**     | CI/CD automation                        |
+| **GitHub OIDC**        | Secure AWS authentication for CI/CD     |
+
 
 ---
 
